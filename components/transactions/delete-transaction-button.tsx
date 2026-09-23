@@ -1,10 +1,24 @@
-// STUB buatan PM. Isi diganti Orang 2 (FR-04): hubungkan ke deleteTransaction
-// di lib/actions/transaction.ts dan wajib confirm("Hapus transaksi ini?").
-// Nama export dan props { id: number } TIDAK boleh diubah.
+"use client";
+
+import { useActionState } from "react";
+import { deleteTransaction } from "@/lib/actions/transaction";
+import { initialState } from "@/lib/action-state";
+
 export default function DeleteTransactionButton({ id }: { id: number }) {
+  const [state, formAction, pending] = useActionState(deleteTransaction, initialState);
+
   return (
-    <button type="button" data-id={id} className="text-sm text-red-600">
-      Hapus
-    </button>
+    <form
+      action={formAction}
+      onSubmit={(e) => {
+        if (!confirm("Hapus transaksi ini?")) e.preventDefault();
+      }}
+    >
+      <input type="hidden" name="id" value={id} />
+      <button type="submit" disabled={pending} className="text-sm text-red-600 disabled:opacity-50">
+        Hapus
+      </button>
+      {state.error && <span className="ml-2 text-sm text-red-600">{state.error}</span>}
+    </form>
   );
 }
