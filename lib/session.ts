@@ -1,27 +1,106 @@
-// STUB SEMENTARA buatan PM.
-// Isi file ini akan diganti oleh pemilik FR autentikasi (Orang 1) sesuai
-// bagian 1 & 7 di docs/00-panduan-global.md.
-// SIGNATURE DAN RETURN TYPE TIDAK BOLEH DIUBAH.
-// Selain Orang 1, DILARANG mengubah file ini atau membaca cookie "session" langsung.
+import { createHmac, timingSafeEqual } from "node:crypto";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { User } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 
-// STUB: selalu mengembalikan user seed pertama (demo@example.com).
+const SESSION_COOKIE_NAME = "session";
+const SESSION_MAX_AGE = 604800;
+
+function getSecret(): string {
+  const secret = process.env.SESSION_SECRET;
+
+  if (!secret) {
+    throw new Error("SESSION_SECRET belum diatur.");
+  }
+
+  return secret;
+}
+
+function sign(payload: string): string {
+  return createHmac("sha256", getSecret())
+    .update(payload)
+    .digest("hex");
+}
+
 export async function getCurrentUser(): Promise<User | null> {
-  return prisma.user.findUnique({ where: { email: "demo@example.com" } });
+  const cookieStore = await cookies();
+  const session = cookieStore.get(SESSION_COOKIE_NAME);
+
+  if (!session) {
+    return null;
+  }
+
+  const parts = session.value.split(".");
+
+  if (parts.length !== 3) {
+    return null;
+  }
+
+  const [userIdText, expiresAtText, signature] = parts;
+
+  const userId = Number(userIdText);
+  const expiresAt = Number(expiresAtText);
+
+  if (!Number.isInteger(userId) || userId <= 0) {
+    return null;
+  }
+
+  if (!Number.isFinite(expiresAt) || Date.now() > expiresAt) {
+    return null;
+  }
+
+  const payload = `${userId}.${expiresAt}`;
+  const expectedSignature = sign(payload);
+
+  const actualBuffer = Buffer.from(signature, "hex");
+  const expectedBuffer = Buffer.from(expectedSignature, "hex");
+
+  if (actualBuffer.length !== expectedBuffer.length) {
+    return null;
+  }
+
+  if (!timingSafeEqual(actualBuffer, expectedBuffer)) {
+    return null;
+  }
+
+  return prisma.user.findUnique({
+    where: { id: userId },
+  });
 }
 
 export async function requireUser(): Promise<User> {
   const user = await getCurrentUser();
-  if (!user) redirect("/login");
+
+  if (!user) {
+    redirect("/login");
+  }
+
   return user;
 }
 
-// STUB: belum membuat cookie. Hanya dipakai lib/actions/auth.ts.
 export async function createSession(userId: number): Promise<void> {
-  void userId;
+  const expiresAt = Date.now() + SESSION_MAX_AGE * 1000;
+
+  const payload = `${userId}.${expiresAt}`;
+  const signature = sign(payload);
+
+  const cookieStore = await cookies();
+
+  cookieStore.set(
+    SESSION_COOKIE_NAME,
+    `${payload}.${signature}`,
+    {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: SESSION_MAX_AGE,
+    },
+  );
 }
 
-// STUB: belum menghapus cookie. Hanya dipakai lib/actions/auth.ts.
-export async function deleteSession(): Promise<void> {}
+export async function deleteSession(): Promise<void> {
+  const cookieStore = await cookies();
+  cookieStore.delete(SESSION_COOKIE_NAME);
+}
