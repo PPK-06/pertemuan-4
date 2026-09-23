@@ -1,0 +1,6 @@
+Fazl - FR-01 : Sebagai pengguna, saya bisa membuat akun dengan email dan password sehingga saya punya identitas sendiri untuk menyimpan data keuangan pribadi.
+Fazl - FR-02 : Sebagai pengguna, saya bisa login dan logout menggunakan email dan password sehingga hanya saya sendiri yang bisa mengakses data keuangan saya.
+Dhimas - FR-03 : Sebagai pengguna, saya bisa menambahkan transaksi baru berupa pemasukan atau pengeluaran sehingga setiap perubahan keuangan saya tercatat saat terjadi.
+Dhimas - FR-04 : Sebagai pengguna, saya bisa mengubah dan menghapus transaksi yang sudah saya catat sehingga saya bisa memperbaiki data yang keliru atau sudah tidak relevan.
+Ferdy - FR-05 : Sebagai pengguna, saya bisa melihat ringkasan akun berupa saldo, riwayat transaksi, total pemasukan, dan total pengeluaran sehingga saya bisa memahami kondisi keuangan saya secara cepat.
+Ferdy - FR-06 : Sebagai pengguna, saya bisa memfilter riwayat transaksi berdasarkan jenis (pemasukan/pengeluaran) dan pilihan filter terakhir saya diingat sehingga saya tidak perlu mengatur ulang tampilan setiap kali membuka aplikasi.
