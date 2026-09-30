@@ -29,6 +29,57 @@ model User {
   password     String
   createdAt    DateTime      @default(now())
   transactions Transaction[]
+  categories   Category[]
+  wallets      Wallet[]
+  budgets      Budget[]
+}
+
+model Category {
+  id           String        @id @default(cuid())
+  userId       Int
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model Wallet {
+  id           String        @id @default(cuid())
+  userId       Int
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  type         String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model Budget {
+  id          String    @id @default(cuid())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  month       String
+  limitAmount Int
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  walletId    String?
+  wallet      Wallet?   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, month, categoryId, walletId])
+  @@index([userId, month])
+  @@index([categoryId])
+  @@index([walletId])
 }
 
 model Transaction {
@@ -39,8 +90,15 @@ model Transaction {
   amount      Int
   date        DateTime        @db.Date
   description String?
+  categoryId  String?
+  category    Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  walletId    String?
+  wallet      Wallet?         @relation(fields: [walletId], references: [id], onDelete: SetNull)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 
   @@index([userId])
+  @@index([userId, date])
+  @@index([categoryId])
+  @@index([walletId])
 }
