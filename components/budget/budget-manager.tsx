@@ -38,6 +38,7 @@ export default function BudgetManager({
     alert,
     isLoading,
     isMutating,
+    pendingBudgetId,
     loadError,
     actionError,
     changeFilters,
@@ -66,28 +67,20 @@ export default function BudgetManager({
 
       <BudgetSummaryCard summary={summary} />
 
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <BudgetFilterBar
-          month={filters.month}
-          categoryId={filters.categoryId}
-          walletId={filters.walletId}
-          categoryOptions={categoryOptions}
-          walletOptions={walletOptions}
-          isPending={isLoading}
-          onMonthChange={(month: string) => changeFilters({ month })}
-          onCategoryChange={(categoryId: string) =>
-            changeFilters({ categoryId })
-          }
-          onWalletChange={(walletId: string) => changeFilters({ walletId })}
-        />
-        <button
-          type="button"
-          onClick={() => setFormTarget({ mode: "create" })}
-          className="rounded bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-700"
-        >
-          Tambah Anggaran
-        </button>
-      </div>
+      <BudgetFilterBar
+        values={filters}
+        categories={categoryOptions}
+        wallets={walletOptions}
+        onFilterChange={changeFilters}
+      />
+
+      <button
+        type="button"
+        onClick={() => setFormTarget({ mode: "create" })}
+        className="self-start rounded bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-700"
+      >
+        Tambah Anggaran
+      </button>
 
       {formTarget && (
         <BudgetFormContainer
@@ -134,8 +127,11 @@ export default function BudgetManager({
             <BudgetCard
               key={budget.id}
               budget={budget}
-              onEdit={() => setFormTarget({ mode: "edit", budget })}
-              onDelete={() => handleDelete(budget.id)}
+              isPending={budget.id === pendingBudgetId}
+              onEdit={(target: BudgetWithUsage) =>
+                setFormTarget({ mode: "edit", budget: target })
+              }
+              onDelete={handleDelete}
             />
           ))}
         </div>

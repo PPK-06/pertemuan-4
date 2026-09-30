@@ -119,6 +119,11 @@ export function useBudgetManager({
     ) => applyChange(current, action.change, action.filters)
   );
 
+  // Id budget yang mutasinya sedang berjalan; kembali null saat transition selesai.
+  const [pendingBudgetId, setPendingBudgetId] = useOptimistic<string | null>(
+    null
+  );
+
   // Hanya respons dari permintaan overview terakhir yang boleh dipakai.
   const latestRequest = useRef(0);
 
@@ -156,11 +161,10 @@ export function useBudgetManager({
     });
   }
 
-  function changeFilters(next: Partial<BudgetFilters>) {
-    const target = { ...filters, ...next };
-    setFilters(target);
+  function changeFilters(next: BudgetFilters) {
+    setFilters(next);
     setActionError(null);
-    loadOverview(target);
+    loadOverview(next);
   }
 
   function reload() {
@@ -179,6 +183,11 @@ export function useBudgetManager({
     return new Promise((resolve) => {
       startMutation(async () => {
         applyOptimistic({ change: optimisticChange, filters: target });
+        setPendingBudgetId(
+          optimisticChange.type === "delete"
+            ? optimisticChange.id
+            : optimisticChange.budget.id
+        );
 
         let result: ActionResult<T>;
         try {
@@ -273,6 +282,7 @@ export function useBudgetManager({
     alert: getBudgetAlertState(optimisticBudgets),
     isLoading,
     isMutating,
+    pendingBudgetId,
     loadError,
     actionError,
     changeFilters,
