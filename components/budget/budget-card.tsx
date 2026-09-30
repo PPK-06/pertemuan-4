@@ -24,14 +24,14 @@ export default function BudgetCard({
 }: BudgetCardProps) {
   const title =
     budget.categoryName && budget.walletName
-      ? `${budget.categoryName} â€¢ ${budget.walletName}`
+      ? `${budget.categoryName} - ${budget.walletName}`
       : budget.categoryName ?? budget.walletName ?? "Budget";
 
   const exceeded = budget.remainingAmount < 0;
 
   return (
     <article
-      className={`rounded-xl border border-gray-200 bg-white p-5 shadow-sm ${
+      className={`rounded-xl border border-gray-200 bg-white p-5 text-gray-900 shadow-sm ${
         isPending ? "opacity-60" : ""
       }`}
     >
@@ -83,3 +83,4 @@ export default function BudgetCard({
     </article>
   );
 }
+

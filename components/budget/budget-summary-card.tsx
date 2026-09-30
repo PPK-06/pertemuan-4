@@ -15,7 +15,7 @@ export default function BudgetSummaryCard({
   summary,
 }: BudgetSummaryCardProps) {
   return (
-    <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+    <section className="rounded-xl border border-gray-200 bg-white p-6 text-gray-900 shadow-sm">
       <div className="mb-5">
         <h2 className="text-lg font-semibold">Ringkasan Budget</h2>
         <p className="text-sm text-gray-500">{summary.month}</p>
@@ -61,3 +61,4 @@ export default function BudgetSummaryCard({
     </section>
   );
 }
+

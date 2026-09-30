@@ -36,7 +36,7 @@ export default function BudgetForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="space-y-4 rounded-xl border border-gray-200 bg-white p-5"
+      className="space-y-4 rounded-xl border border-gray-200 bg-white p-5 text-gray-900"
     >
       <div>
         <label htmlFor="category" className="mb-1 block text-sm font-medium">
@@ -48,7 +48,7 @@ export default function BudgetForm({
           value={values.categoryId}
           disabled={isPending}
           onChange={(e) => onChange("categoryId", e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2"
+          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900"
         >
           <option value="">Pilih kategori</option>
 
@@ -74,7 +74,7 @@ export default function BudgetForm({
           value={values.walletId}
           disabled={isPending}
           onChange={(e) => onChange("walletId", e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2"
+          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900"
         >
           <option value="">Pilih dompet</option>
 
@@ -101,7 +101,7 @@ export default function BudgetForm({
           value={values.month}
           disabled={isPending}
           onChange={(e) => onChange("month", e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2"
+          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900"
         />
 
         {errors.month && (
@@ -123,7 +123,7 @@ export default function BudgetForm({
           disabled={isPending}
           onChange={(e) => onChange("limitAmount", e.target.value)}
           placeholder="Contoh: 1500000"
-          className="w-full rounded-lg border border-gray-300 px-3 py-2"
+          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900"
         />
 
         {errors.limitAmount && (
@@ -143,3 +143,4 @@ export default function BudgetForm({
     </form>
   );
 }
+

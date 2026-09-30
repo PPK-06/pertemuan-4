@@ -22,7 +22,7 @@ export default function BudgetFilterBar({
   onFilterChange,
 }: BudgetFilterBarProps) {
   return (
-    <div className="grid gap-3 rounded-xl border border-gray-200 bg-white p-4 md:grid-cols-3">
+    <div className="grid gap-3 rounded-xl border border-gray-200 bg-white p-4 text-gray-900 md:grid-cols-3">
       <div>
         <label className="mb-1 block text-sm font-medium" htmlFor="filter-month">
           Bulan
@@ -34,7 +34,7 @@ export default function BudgetFilterBar({
           onChange={(e) =>
             onFilterChange({ ...values, month: e.target.value })
           }
-          className="w-full rounded-lg border border-gray-300 px-3 py-2"
+          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900"
         />
       </div>
 
@@ -52,7 +52,7 @@ export default function BudgetFilterBar({
           onChange={(e) =>
             onFilterChange({ ...values, categoryId: e.target.value })
           }
-          className="w-full rounded-lg border border-gray-300 px-3 py-2"
+          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900"
         >
           <option value="">Semua kategori</option>
 
@@ -78,7 +78,7 @@ export default function BudgetFilterBar({
           onChange={(e) =>
             onFilterChange({ ...values, walletId: e.target.value })
           }
-          className="w-full rounded-lg border border-gray-300 px-3 py-2"
+          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900"
         >
           <option value="">Semua dompet</option>
 
@@ -92,3 +92,4 @@ export default function BudgetFilterBar({
     </div>
   );
 }
+

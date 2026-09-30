@@ -29,7 +29,7 @@ export default function BudgetProgressBar({
     <div className="space-y-1">
       <div className="flex justify-between text-sm">
         <span className="text-gray-600">Pemakaian</span>
-        <span className="font-medium">{Math.round(percentage)}%</span>
+        <span className="font-medium text-gray-900">{Math.round(percentage)}%</span>
       </div>
 
       <div
@@ -47,3 +47,4 @@ export default function BudgetProgressBar({
     </div>
   );
 }
+
