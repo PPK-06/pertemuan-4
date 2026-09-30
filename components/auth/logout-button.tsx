@@ -5,7 +5,8 @@ export default function LogoutButton() {
     <form action={logout}>
       <button
         type="submit"
-        className="rounded border px-3 py-1"
+        className="rounded-lg px-3 py-1.5 text-sm font-medium border transition-colors hover:bg-gray-50"
+        style={{ borderColor: "var(--border)", color: "var(--text-secondary)" }}
       >
         Keluar
       </button>

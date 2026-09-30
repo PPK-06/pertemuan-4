@@ -1,13 +1,12 @@
 "use client";
 
 import { useOptimistic, useRef, useState, useTransition } from "react";
-// TODO: integrasi query Dhimas — ganti path import ke "@/lib/actions/budget".
 import {
   createBudgetAction,
   deleteBudgetAction,
   getBudgetOverviewAction,
   updateBudgetAction,
-} from "@/lib/mocks/budget-mock";
+} from "@/lib/actions/budget";
 import type { BudgetInput } from "@/lib/validations/budget";
 import type {
   ActionResult,

@@ -9,45 +9,92 @@ interface TransactionListProps {
 
 export default function TransactionList({ transactions }: TransactionListProps) {
   if (transactions.length === 0) {
-    return <p className="text-sm text-gray-500">Belum ada transaksi.</p>;
+    return (
+      <div
+        className="rounded-2xl p-10 text-center"
+        style={{
+          backgroundColor: "var(--bg-card)",
+          border: "1px solid var(--border)",
+          boxShadow: "var(--shadow-sm)",
+        }}
+      >
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full" style={{ backgroundColor: "var(--accent-light)" }}>
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} style={{ color: "var(--accent)" }}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+        </div>
+        <p className="text-sm font-medium" style={{ color: "var(--text-secondary)" }}>Belum ada transaksi</p>
+        <p className="mt-1 text-xs" style={{ color: "var(--text-muted)" }}>Tambahkan transaksi pertama Anda</p>
+      </div>
+    );
   }
 
   return (
-    <ul className="divide-y rounded border">
+    <div className="flex flex-col gap-2">
       {transactions.map((t) => (
-        <li
+        <div
           key={t.id}
-          className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3"
+          className="rounded-2xl px-5 py-4 transition-shadow hover:shadow-md"
+          style={{
+            backgroundColor: "var(--bg-card)",
+            border: "1px solid var(--border)",
+            boxShadow: "var(--shadow-sm)",
+          }}
         >
-          <span className="w-24 shrink-0 text-sm text-gray-500">
-            {formatDate(t.date)}
-          </span>
-          <span
-            className={
-              t.type === "INCOME"
-                ? "w-24 shrink-0 text-sm font-medium text-green-600"
-                : "w-24 shrink-0 text-sm font-medium text-red-600"
-            }
-          >
-            {t.type === "INCOME" ? "Pemasukan" : "Pengeluaran"}
-          </span>
-          <span className="w-32 shrink-0 text-sm font-semibold">
-            {formatRupiah(t.amount)}
-          </span>
-          <span className="flex-1 text-sm text-gray-700">
-            {t.description ?? <span className="italic text-gray-400">—</span>}
-          </span>
-          <div className="flex items-center gap-3">
-            <Link
-              href={`/transactions/${t.id}/edit`}
-              className="text-sm text-blue-600 hover:underline"
-            >
-              Ubah
-            </Link>
-            <DeleteTransactionButton id={t.id} />
+          <div className="flex items-center justify-between gap-3">
+            {/* Left: icon + info */}
+            <div className="flex items-center gap-3">
+              <div
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-base"
+                style={{
+                  backgroundColor: t.type === "INCOME" ? "var(--income-light)" : "var(--expense-light)",
+                }}
+              >
+                {t.type === "INCOME" ? "↑" : "↓"}
+              </div>
+              <div>
+                <p className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+                  {t.description ?? <span style={{ color: "var(--text-muted)", fontStyle: "italic" }}>Tanpa keterangan</span>}
+                </p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span
+                    className="rounded-full px-2 py-0.5 text-xs font-medium"
+                    style={{
+                      backgroundColor: t.type === "INCOME" ? "var(--income-light)" : "var(--expense-light)",
+                      color: t.type === "INCOME" ? "var(--income)" : "var(--expense)",
+                    }}
+                  >
+                    {t.type === "INCOME" ? "Pemasukan" : "Pengeluaran"}
+                  </span>
+                  <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+                    {formatDate(t.date)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: amount + actions */}
+            <div className="flex flex-col items-end gap-2">
+              <p
+                className="text-base font-bold"
+                style={{ color: t.type === "INCOME" ? "var(--income)" : "var(--expense)" }}
+              >
+                {t.type === "INCOME" ? "+" : "-"}{formatRupiah(t.amount)}
+              </p>
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/transactions/${t.id}/edit`}
+                  className="rounded-lg px-2.5 py-1 text-xs font-medium border transition-colors hover:bg-gray-50"
+                  style={{ borderColor: "var(--border)", color: "var(--text-secondary)" }}
+                >
+                  Edit
+                </Link>
+                <DeleteTransactionButton id={t.id} />
+              </div>
+            </div>
           </div>
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }

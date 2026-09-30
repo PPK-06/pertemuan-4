@@ -5,55 +5,66 @@ import { login } from "@/lib/actions/auth";
 import { initialState } from "@/lib/action-state";
 
 export default function LoginForm() {
-  const [state, formAction, pending] = useActionState(
-    login,
-    initialState,
-  );
+  const [state, formAction, pending] = useActionState(login, initialState);
 
   return (
     <form action={formAction} className="space-y-4">
       <div>
-        <label
-          htmlFor="email"
-          className="mb-1 block font-medium"
-        >
+        <label htmlFor="email" className="mb-1.5 block text-sm font-medium" style={{ color: "var(--text-primary)" }}>
           Email
         </label>
-
         <input
           id="email"
           name="email"
           type="email"
-          className="w-full rounded border p-2"
+          autoComplete="email"
+          placeholder="demo@example.com"
+          className="w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-all focus:ring-2"
+          style={{
+            borderColor: "var(--border)",
+            backgroundColor: "var(--bg-app)",
+            color: "var(--text-primary)",
+          }}
         />
       </div>
 
       <div>
-        <label
-          htmlFor="password"
-          className="mb-1 block font-medium"
-        >
+        <label htmlFor="password" className="mb-1.5 block text-sm font-medium" style={{ color: "var(--text-primary)" }}>
           Password
         </label>
-
         <input
           id="password"
           name="password"
           type="password"
-          className="w-full rounded border p-2"
+          autoComplete="current-password"
+          placeholder="••••••••"
+          className="w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-all focus:ring-2"
+          style={{
+            borderColor: "var(--border)",
+            backgroundColor: "var(--bg-app)",
+            color: "var(--text-primary)",
+          }}
         />
       </div>
 
       {state.error && (
-        <p className="text-sm text-red-600">
+        <div
+          className="rounded-xl border px-4 py-3 text-sm"
+          style={{
+            borderColor: "#fecaca",
+            backgroundColor: "var(--expense-light)",
+            color: "var(--expense)",
+          }}
+        >
           {state.error}
-        </p>
+        </div>
       )}
 
       <button
         type="submit"
         disabled={pending}
-        className="rounded bg-black px-4 py-2 text-white disabled:opacity-50"
+        className="w-full rounded-xl py-2.5 text-sm font-semibold text-white transition-opacity disabled:opacity-60"
+        style={{ backgroundColor: "var(--accent)" }}
       >
         {pending ? "Memproses..." : "Masuk"}
       </button>

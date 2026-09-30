@@ -11,62 +11,110 @@ export default function TransactionForm({ transaction }: { transaction?: Transac
   const [state, formAction, pending] = useActionState(action, initialState);
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
+    <form
+      action={formAction}
+      className="space-y-5 rounded-2xl p-6"
+      style={{
+        backgroundColor: "var(--bg-card)",
+        border: "1px solid var(--border)",
+        boxShadow: "var(--shadow-sm)",
+      }}
+    >
       {transaction && <input type="hidden" name="id" value={transaction.id} />}
 
-      <label className="flex flex-col gap-1 text-sm font-medium">
-        Jenis Transaksi
+      <div>
+        <label htmlFor="tx-type" className="mb-1.5 block text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+          Jenis Transaksi
+        </label>
         <select
+          id="tx-type"
           name="type"
           defaultValue={transaction?.type ?? ""}
-          className="rounded border px-3 py-2 text-sm"
+          className="w-full rounded-xl border px-4 py-2.5 text-sm outline-none"
+          style={{
+            borderColor: "var(--border)",
+            backgroundColor: "var(--bg-app)",
+            color: "var(--text-primary)",
+          }}
         >
           <option value="">Pilih jenis transaksi</option>
           <option value="INCOME">Pemasukan</option>
           <option value="EXPENSE">Pengeluaran</option>
         </select>
-      </label>
+      </div>
 
-      <label className="flex flex-col gap-1 text-sm font-medium">
-        Jumlah (Rp)
+      <div>
+        <label htmlFor="tx-amount" className="mb-1.5 block text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+          Jumlah (Rp)
+        </label>
         <input
+          id="tx-amount"
           type="number"
           name="amount"
           defaultValue={transaction?.amount}
-          className="rounded border px-3 py-2 text-sm"
           placeholder="Contoh: 50000"
+          className="w-full rounded-xl border px-4 py-2.5 text-sm outline-none"
+          style={{
+            borderColor: "var(--border)",
+            backgroundColor: "var(--bg-app)",
+            color: "var(--text-primary)",
+          }}
         />
-      </label>
+      </div>
 
-      <label className="flex flex-col gap-1 text-sm font-medium">
-        Tanggal
+      <div>
+        <label htmlFor="tx-date" className="mb-1.5 block text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+          Tanggal
+        </label>
         <input
+          id="tx-date"
           type="date"
           name="date"
           defaultValue={transaction ? toDateInputValue(new Date(transaction.date)) : ""}
-          className="rounded border px-3 py-2 text-sm"
+          className="w-full rounded-xl border px-4 py-2.5 text-sm outline-none"
+          style={{
+            borderColor: "var(--border)",
+            backgroundColor: "var(--bg-app)",
+            color: "var(--text-primary)",
+          }}
         />
-      </label>
+      </div>
 
-      <label className="flex flex-col gap-1 text-sm font-medium">
-        Deskripsi
+      <div>
+        <label htmlFor="tx-description" className="mb-1.5 block text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+          Deskripsi <span style={{ color: "var(--text-muted)" }}>(opsional)</span>
+        </label>
         <input
+          id="tx-description"
           type="text"
           name="description"
           defaultValue={transaction?.description ?? ""}
-          className="rounded border px-3 py-2 text-sm"
-          placeholder="Catatan transaksi (opsional)"
+          placeholder="Catatan transaksi"
+          className="w-full rounded-xl border px-4 py-2.5 text-sm outline-none"
+          style={{
+            borderColor: "var(--border)",
+            backgroundColor: "var(--bg-app)",
+            color: "var(--text-primary)",
+          }}
         />
-      </label>
+      </div>
 
-      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
+      {state.error && (
+        <div
+          className="rounded-xl border px-4 py-3 text-sm"
+          style={{ borderColor: "#fecaca", backgroundColor: "var(--expense-light)", color: "var(--expense)" }}
+        >
+          {state.error}
+        </div>
+      )}
 
       <button
         type="submit"
         disabled={pending}
-        className="self-start rounded bg-gray-900 px-4 py-2 text-sm text-white disabled:opacity-50"
+        className="w-full rounded-xl py-2.5 text-sm font-semibold text-white transition-opacity disabled:opacity-60"
+        style={{ backgroundColor: "var(--accent)" }}
       >
-        {pending ? "Menyimpan..." : "Simpan"}
+        {pending ? "Menyimpan..." : transaction ? "Simpan Perubahan" : "Tambah Transaksi"}
       </button>
     </form>
   );

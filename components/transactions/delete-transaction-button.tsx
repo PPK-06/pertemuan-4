@@ -15,10 +15,19 @@ export default function DeleteTransactionButton({ id }: { id: number }) {
       }}
     >
       <input type="hidden" name="id" value={id} />
-      <button type="submit" disabled={pending} className="text-sm text-red-600 disabled:opacity-50">
-        Hapus
+      <button
+        type="submit"
+        disabled={pending}
+        className="rounded-lg px-2.5 py-1 text-xs font-medium border transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+        style={{ borderColor: "#fecaca", color: "var(--expense)" }}
+      >
+        {pending ? "..." : "Hapus"}
       </button>
-      {state.error && <span className="ml-2 text-sm text-red-600">{state.error}</span>}
+      {state.error && (
+        <span className="ml-2 text-xs" style={{ color: "var(--expense)" }}>
+          {state.error}
+        </span>
+      )}
     </form>
   );
 }

@@ -1,11 +1,10 @@
 import BudgetManager from "@/components/budget/budget-manager";
-// TODO: integrasi query Dhimas — ganti path import ke "@/lib/queries/budget".
 import {
   getBudgetSummary,
   getBudgetsWithUsage,
   getCategoryOptions,
   getWalletOptions,
-} from "@/lib/mocks/budget-mock";
+} from "@/lib/queries/budget";
 import { requireUser } from "@/lib/session";
 
 export default async function BudgetPage() {

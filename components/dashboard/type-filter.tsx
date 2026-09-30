@@ -22,17 +22,21 @@ export default function TypeFilter({ currentFilter }: TypeFilterProps) {
   );
 
   return (
-    <div className="flex gap-2">
+    <div
+      className="flex gap-1 rounded-xl p-1"
+      style={{ backgroundColor: "var(--border)" }}
+    >
       {FILTERS.map(({ value, label }) => (
-        <form key={value} action={formAction}>
+        <form key={value} action={formAction} className="flex-1">
           <input type="hidden" name="type" value={value} />
           <button
             type="submit"
             disabled={pending}
-            className={
+            className="w-full rounded-lg py-1.5 text-sm font-medium transition-all disabled:opacity-50"
+            style={
               currentFilter === value
-                ? "rounded border border-gray-900 bg-gray-900 px-4 py-1.5 text-sm text-white disabled:opacity-50"
-                : "rounded border px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                ? { backgroundColor: "var(--bg-card)", color: "var(--accent)", boxShadow: "var(--shadow-sm)" }
+                : { backgroundColor: "transparent", color: "var(--text-secondary)" }
             }
           >
             {label}
